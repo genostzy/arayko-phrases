@@ -62,9 +62,8 @@ export default function AboutSection() {
           </h2>
           <p className="text-white/50 text-base leading-relaxed max-w-md">
             ArayKoPo NFT is a collection of iconic Phrases, minted fully
-            on-chain on the Stellar network. Each token is a piece of the
-            story — non-custodial, verifiable, and yours to keep, trade, or
-            pass on.
+            on-chain on the Stellar network. Each token is non-custodial,
+            verifiable, and yours to keep, trade, or pass on.
           </p>
         </div>
 

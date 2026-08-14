@@ -32,8 +32,8 @@ export default function MarketplaceSection() {
           PHRASE
         </h2>
         <p className="text-base text-white/50 max-w-lg mx-auto mb-12 leading-relaxed">
-          Six unique Phrase NFTs. Connect your Stellar wallet to buy one, or
-          — if you're the collection owner — list them for sale.
+          Connect your Stellar wallet to buy a phrase, or list one for sale
+          if you're the collection owner.
         </p>
 
         <div
