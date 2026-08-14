@@ -72,6 +72,44 @@ impl PhraseMarketplace {
         phrase_id
     }
 
+    pub fn buy(env: Env, buyer: Address, token_id: u32) {
+        buyer.require_auth();
+
+        let owner: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::TokenOwner(token_id))
+            .expect("Token does not exist");
+
+        if owner == buyer {
+            panic!("Already own this token");
+        }
+
+        let for_sale: bool = env.storage().instance().get(&DataKey::ForSale(token_id)).unwrap_or(false);
+        if !for_sale {
+            panic!("Token is not for sale");
+        }
+
+        let price: i128 = env
+            .storage()
+            .instance()
+            .get(&DataKey::TokenPrice(token_id))
+            .expect("Price not set");
+
+        let native_token: Address = env.storage().instance().get(&NATIVE).expect("Not initialized");
+        let token_client = token::TokenClient::new(&env, &native_token);
+        token_client.transfer(&buyer, &owner, &price);
+
+        env.storage().instance().set(&DataKey::TokenOwner(token_id), &buyer);
+        env.storage().instance().set(&DataKey::ForSale(token_id), &false);
+
+        let seller_balance: u32 = env.storage().instance().get(&DataKey::Balance(owner.clone())).unwrap_or(0u32);
+        env.storage().instance().set(&DataKey::Balance(owner), &seller_balance.saturating_sub(1));
+
+        let buyer_balance: u32 = env.storage().instance().get(&DataKey::Balance(buyer.clone())).unwrap_or(0u32);
+        env.storage().instance().set(&DataKey::Balance(buyer), &(buyer_balance + 1));
+    }
+
     pub fn owner_of(env: Env, token_id: u32) -> Option<Address> {
         env.storage().instance().get(&DataKey::TokenOwner(token_id))
     }
@@ -204,5 +242,121 @@ mod tests {
         let (client, _admin, _native) = setup(&env);
 
         client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &0i128);
+    }
+
+    #[test]
+    fn test_buy_transfers_ownership_and_payment() {
+        let env = Env::default();
+        env.mock_all_auths();
+
+        let contract_id = env.register_contract(None, PhraseMarketplace);
+        let client = PhraseMarketplaceClient::new(&env, &contract_id);
+        let admin = Address::generate(&env);
+        let buyer = Address::generate(&env);
+
+        let sac = env.register_stellar_asset_contract_v2(Address::generate(&env));
+        let native = sac.address();
+        let native_asset_client = token::StellarAssetClient::new(&env, &native);
+        native_asset_client.mint(&buyer, &1_000_0000000i128);
+
+        client.initialize(
+            &admin,
+            &String::from_str(&env, "ArayKoPo Phrases"),
+            &String::from_str(&env, "ARKPO"),
+            &native,
+        );
+        let price = 500_0000000i128;
+        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &price);
+
+        client.buy(&buyer, &0u32);
+
+        assert_eq!(client.owner_of(&0u32), Some(buyer.clone()));
+        assert!(!client.is_for_sale(&0u32));
+        assert_eq!(client.balance_of(&buyer), 1);
+        assert_eq!(client.balance_of(&admin), 0);
+
+        let native_view = token::TokenClient::new(&env, &native);
+        assert_eq!(native_view.balance(&buyer), 1_000_0000000i128 - price);
+        assert_eq!(native_view.balance(&admin), price);
+    }
+
+    #[test]
+    #[should_panic(expected = "Token is not for sale")]
+    fn test_buy_rejects_not_for_sale() {
+        let env = Env::default();
+        env.mock_all_auths();
+
+        let contract_id = env.register_contract(None, PhraseMarketplace);
+        let client = PhraseMarketplaceClient::new(&env, &contract_id);
+        let admin = Address::generate(&env);
+        let first_buyer = Address::generate(&env);
+        let second_buyer = Address::generate(&env);
+        let sac = env.register_stellar_asset_contract_v2(Address::generate(&env));
+        let native = sac.address();
+        let native_asset_client = token::StellarAssetClient::new(&env, &native);
+        native_asset_client.mint(&first_buyer, &1_000_0000000i128);
+        native_asset_client.mint(&second_buyer, &1_000_0000000i128);
+
+        client.initialize(
+            &admin,
+            &String::from_str(&env, "ArayKoPo Phrases"),
+            &String::from_str(&env, "ARKPO"),
+            &native,
+        );
+        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+
+        // Once bought, the phrase is no longer for sale — a second buyer
+        // trying to buy the same already-owned token must be rejected.
+        client.buy(&first_buyer, &0u32);
+        client.buy(&second_buyer, &0u32);
+    }
+
+    #[test]
+    #[should_panic(expected = "Already own this token")]
+    fn test_buy_rejects_self_purchase() {
+        let env = Env::default();
+        env.mock_all_auths();
+
+        let contract_id = env.register_contract(None, PhraseMarketplace);
+        let client = PhraseMarketplaceClient::new(&env, &contract_id);
+        let admin = Address::generate(&env);
+        let sac = env.register_stellar_asset_contract_v2(Address::generate(&env));
+        let native = sac.address();
+
+        client.initialize(
+            &admin,
+            &String::from_str(&env, "ArayKoPo Phrases"),
+            &String::from_str(&env, "ARKPO"),
+            &native,
+        );
+        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+
+        client.buy(&admin, &0u32);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_buy_fails_without_buyer_authorization() {
+        let env = Env::default();
+        env.mock_all_auths();
+
+        let contract_id = env.register_contract(None, PhraseMarketplace);
+        let client = PhraseMarketplaceClient::new(&env, &contract_id);
+        let admin = Address::generate(&env);
+        let buyer = Address::generate(&env);
+        let sac = env.register_stellar_asset_contract_v2(Address::generate(&env));
+        let native = sac.address();
+        token::StellarAssetClient::new(&env, &native).mint(&buyer, &1_000_0000000i128);
+
+        client.initialize(
+            &admin,
+            &String::from_str(&env, "ArayKoPo Phrases"),
+            &String::from_str(&env, "ARKPO"),
+            &native,
+        );
+        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+
+        // No auth provided for the buyer on this call — must panic.
+        client.set_auths(&[]).buy(&buyer, &0u32);
     }
 }
