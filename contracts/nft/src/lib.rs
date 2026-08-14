@@ -2,8 +2,6 @@
 
 use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, token, Address, Env, String, Symbol};
 
-pub const PHRASE_COUNT: u32 = 6;
-
 const ADMIN: Symbol = symbol_short!("ADMIN");
 const NATIVE: Symbol = symbol_short!("NATIVE");
 const NAME: Symbol = symbol_short!("NAME");
@@ -44,32 +42,26 @@ impl PhraseMarketplace {
         env.storage().instance().get(&ADMIN).expect("Not initialized")
     }
 
-    pub fn mint(env: Env, phrase_id: u32, uri: String, price: i128) -> u32 {
+    pub fn mint(env: Env, uri: String, price: i128) -> u32 {
         let admin: Address = env.storage().instance().get(&ADMIN).expect("Not initialized");
         admin.require_auth();
 
-        if phrase_id >= PHRASE_COUNT {
-            panic!("Invalid phrase id");
-        }
         if price <= 0 {
             panic!("Price must be positive");
         }
-        if env.storage().instance().has(&DataKey::TokenOwner(phrase_id)) {
-            panic!("Phrase already minted");
-        }
 
-        env.storage().instance().set(&DataKey::TokenOwner(phrase_id), &admin);
-        env.storage().instance().set(&DataKey::TokenURI(phrase_id), &uri);
-        env.storage().instance().set(&DataKey::TokenPrice(phrase_id), &price);
-        env.storage().instance().set(&DataKey::ForSale(phrase_id), &true);
+        let token_id: u32 = env.storage().instance().get(&COUNTER).unwrap_or(0u32);
+        env.storage().instance().set(&COUNTER, &(token_id + 1));
+
+        env.storage().instance().set(&DataKey::TokenOwner(token_id), &admin);
+        env.storage().instance().set(&DataKey::TokenURI(token_id), &uri);
+        env.storage().instance().set(&DataKey::TokenPrice(token_id), &price);
+        env.storage().instance().set(&DataKey::ForSale(token_id), &true);
 
         let balance: u32 = env.storage().instance().get(&DataKey::Balance(admin.clone())).unwrap_or(0u32);
         env.storage().instance().set(&DataKey::Balance(admin.clone()), &(balance + 1));
 
-        let counter: u32 = env.storage().instance().get(&COUNTER).unwrap_or(0u32);
-        env.storage().instance().set(&COUNTER, &(counter + 1));
-
-        phrase_id
+        token_id
     }
 
     pub fn buy(env: Env, buyer: Address, token_id: u32) {
@@ -191,7 +183,7 @@ mod tests {
         env.mock_all_auths();
         let (client, admin, _native) = setup(&env);
 
-        let token_id = client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+        let token_id = client.mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
 
         assert_eq!(token_id, 0);
         assert_eq!(client.owner_of(&0u32), Some(admin.clone()));
@@ -213,28 +205,24 @@ mod tests {
         // nothing authorized the admin address for this invocation.
         client
             .set_auths(&[])
-            .mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+            .mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
     }
 
     #[test]
-    #[should_panic(expected = "Phrase already minted")]
-    fn test_mint_rejects_duplicate_phrase() {
+    fn test_mint_assigns_sequential_ids() {
         let env = Env::default();
         env.mock_all_auths();
-        let (client, _admin, _native) = setup(&env);
+        let (client, admin, _native) = setup(&env);
 
-        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
-        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
-    }
+        let first = client.mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+        let second = client.mint(&String::from_str(&env, "https://example.com/custom.png"), &900_0000000i128);
 
-    #[test]
-    #[should_panic(expected = "Invalid phrase id")]
-    fn test_mint_rejects_out_of_range_phrase_id() {
-        let env = Env::default();
-        env.mock_all_auths();
-        let (client, _admin, _native) = setup(&env);
-
-        client.mint(&6u32, &String::from_str(&env, "/images/Phrase%237.jpg"), &500_0000000i128);
+        assert_eq!(first, 0);
+        assert_eq!(second, 1);
+        assert_eq!(client.owner_of(&1u32), Some(admin.clone()));
+        assert_eq!(client.price_of(&1u32), Some(900_0000000i128));
+        assert_eq!(client.balance_of(&admin), 2);
+        assert_eq!(client.total_supply(), 2);
     }
 
     #[test]
@@ -244,7 +232,7 @@ mod tests {
         env.mock_all_auths();
         let (client, _admin, _native) = setup(&env);
 
-        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &0i128);
+        client.mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &0i128);
     }
 
     #[test]
@@ -269,7 +257,7 @@ mod tests {
             &native,
         );
         let price = 500_0000000i128;
-        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &price);
+        client.mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &price);
 
         client.buy(&buyer, &0u32);
 
@@ -306,7 +294,7 @@ mod tests {
             &String::from_str(&env, "ARKPO"),
             &native,
         );
-        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+        client.mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
 
         // Once bought, the phrase is no longer for sale — a second buyer
         // trying to buy the same already-owned token must be rejected.
@@ -332,7 +320,7 @@ mod tests {
             &String::from_str(&env, "ARKPO"),
             &native,
         );
-        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+        client.mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
 
         client.buy(&admin, &0u32);
     }
@@ -357,7 +345,7 @@ mod tests {
             &String::from_str(&env, "ARKPO"),
             &native,
         );
-        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+        client.mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
 
         // No auth provided for the buyer on this call — must panic.
         client.set_auths(&[]).buy(&buyer, &0u32);
@@ -368,7 +356,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let (client, admin, _native) = setup(&env);
-        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+        client.mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
 
         let recipient = Address::generate(&env);
         client.transfer(&admin, &recipient, &0u32);
@@ -384,7 +372,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let (client, admin, _native) = setup(&env);
-        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+        client.mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
 
         let recipient = Address::generate(&env);
         // No auth provided for `from` on this call — must panic.
@@ -396,7 +384,7 @@ mod tests {
         let env = Env::default();
         env.mock_all_auths();
         let (client, admin, _native) = setup(&env);
-        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+        client.mint(&String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
         assert!(client.is_for_sale(&0u32));
 
         let recipient = Address::generate(&env);
