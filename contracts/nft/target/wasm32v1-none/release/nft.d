@@ -1,1 +1,0 @@
-C:\Users\Wilson\Documents\Web3\ Practice\stellar-counter-dapp\contracts\nft\target\wasm32v1-none\release\nft.wasm: C:\Users\Wilson\Documents\Web3\ Practice\stellar-counter-dapp\contracts\nft\src\lib.rs
