@@ -67,7 +67,7 @@ export default function PhraseGrid({ walletAddress }: PhraseGridProps) {
       let admin: string | null = null;
       if ("result" in adminResult && adminResult.result) {
         const val = StellarSdk.scValToNative(adminResult.result.retval);
-        if (val && typeof val === "object" && "toString" in val) admin = val.toString();
+        if (typeof val === "string") admin = val;
       }
       setAdminAddress(admin);
 
@@ -88,7 +88,7 @@ export default function PhraseGrid({ walletAddress }: PhraseGridProps) {
           let owner: string | null = null;
           if ("result" in ownerRes && ownerRes.result) {
             const val = StellarSdk.scValToNative(ownerRes.result.retval);
-            if (val && typeof val === "object" && "toString" in val) owner = val.toString();
+            if (typeof val === "string") owner = val;
           }
 
           let price: number | null = null;
