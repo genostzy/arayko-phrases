@@ -34,7 +34,7 @@ export function NetworkStatus({ walletAddress }: NetworkStatusProps) {
         display: "flex",
         alignItems: "center",
         gap: "1.5rem",
-        fontSize: "0.65rem",
+        fontSize: "0.8rem",
         color: "var(--text-muted)",
         letterSpacing: "0.1em",
         animation: mounted ? "fadeIn 0.5s ease-out" : "none",

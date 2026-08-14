@@ -83,7 +83,7 @@ export function NFTMinter({ walletAddress, onMinted }: NFTMinterProps) {
     <div style={{ width: "100%" }}>
       <h2
         style={{
-          fontSize: "0.75rem",
+          fontSize: "0.9rem",
           fontWeight: 800,
           letterSpacing: "0.2em",
           marginBottom: "2rem",
@@ -125,7 +125,7 @@ export function NFTMinter({ walletAddress, onMinted }: NFTMinterProps) {
           border: "2px solid rgba(255,255,255,0.1)",
           background: "transparent",
           color: "white",
-          fontSize: "0.8rem",
+          fontSize: "0.95rem",
           fontWeight: 600,
           letterSpacing: "0.1em",
           outline: "none",
@@ -153,7 +153,7 @@ export function NFTMinter({ walletAddress, onMinted }: NFTMinterProps) {
               ? "rgba(255,255,255,0.3)"
               : "black",
           fontWeight: 800,
-          fontSize: "0.8rem",
+          fontSize: "0.95rem",
           letterSpacing: "0.2em",
           cursor:
             loading || !isConfigured || !walletAddress || !uri.trim()
@@ -189,7 +189,7 @@ export function NFTMinter({ walletAddress, onMinted }: NFTMinterProps) {
         <p
           style={{
             marginTop: "1rem",
-            fontSize: "0.7rem",
+            fontSize: "0.85rem",
             textAlign: "center",
             color: status.includes("Minted") ? "var(--green)" : "var(--text-muted)",
             letterSpacing: "0.05em",

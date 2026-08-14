@@ -180,7 +180,7 @@ export function NFTGallery({ walletAddress, refreshKey }: NFTGalleryProps) {
     <div style={{ width: "100%" }}>
       <h2
         style={{
-          fontSize: "0.75rem",
+          fontSize: "0.9rem",
           fontWeight: 800,
           letterSpacing: "0.2em",
           marginBottom: "2rem",
@@ -192,7 +192,7 @@ export function NFTGallery({ walletAddress, refreshKey }: NFTGalleryProps) {
 
       <p
         style={{
-          fontSize: "0.7rem",
+          fontSize: "0.85rem",
           color: "var(--text-muted)",
           textAlign: "center",
           marginBottom: "2rem",
@@ -210,7 +210,7 @@ export function NFTGallery({ walletAddress, refreshKey }: NFTGalleryProps) {
             border: "2px solid rgba(255,255,255,0.1)",
           }}
         >
-          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
+          <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
             CONNECT WALLET TO VIEW
           </p>
         </div>
@@ -228,7 +228,7 @@ export function NFTGallery({ walletAddress, refreshKey }: NFTGalleryProps) {
             border: "2px solid rgba(255,255,255,0.1)",
           }}
         >
-          <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
+          <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
             NO NFTS YET
           </p>
         </div>
@@ -282,12 +282,12 @@ export function NFTGallery({ walletAddress, refreshKey }: NFTGalleryProps) {
                         marginBottom: "0.5rem",
                       }}
                     >
-                      <span style={{ fontSize: "0.85rem", fontWeight: 800, letterSpacing: "0.05em" }}>
+                      <span style={{ fontSize: "1rem", fontWeight: 800, letterSpacing: "0.05em" }}>
                         #{nft.tokenId}
                       </span>
                       <span
                         style={{
-                          fontSize: "0.6rem",
+                          fontSize: "0.75rem",
                           padding: "0.2rem 0.5rem",
                           border: "1px solid var(--green)",
                           color: "var(--green)",
@@ -299,7 +299,7 @@ export function NFTGallery({ walletAddress, refreshKey }: NFTGalleryProps) {
                     </div>
                     <p
                       style={{
-                        fontSize: "0.6rem",
+                        fontSize: "0.75rem",
                         color: "var(--text-muted)",
                         fontFamily: "monospace",
                       }}
@@ -315,7 +315,7 @@ export function NFTGallery({ walletAddress, refreshKey }: NFTGalleryProps) {
                       border: "1px solid rgba(255,255,255,0.2)",
                       background: "transparent",
                       color: "var(--text-muted)",
-                      fontSize: "0.6rem",
+                      fontSize: "0.75rem",
                       fontWeight: 700,
                       letterSpacing: "0.15em",
                       cursor: "pointer",
@@ -358,7 +358,7 @@ export function NFTGallery({ walletAddress, refreshKey }: NFTGalleryProps) {
                       border: "1px solid rgba(255,255,255,0.1)",
                       background: "transparent",
                       color: "white",
-                      fontSize: "0.7rem",
+                      fontSize: "0.85rem",
                       fontFamily: "monospace",
                       outline: "none",
                     }}
@@ -371,7 +371,7 @@ export function NFTGallery({ walletAddress, refreshKey }: NFTGalleryProps) {
                       border: "1px solid white",
                       background: transferLoading || !transferAddr.trim() ? "transparent" : "white",
                       color: transferLoading || !transferAddr.trim() ? "rgba(255,255,255,0.3)" : "black",
-                      fontSize: "0.65rem",
+                      fontSize: "0.8rem",
                       fontWeight: 800,
                       letterSpacing: "0.1em",
                       cursor: transferLoading || !transferAddr.trim() ? "not-allowed" : "pointer",
@@ -390,7 +390,7 @@ export function NFTGallery({ walletAddress, refreshKey }: NFTGalleryProps) {
         <p
           style={{
             marginTop: "1rem",
-            fontSize: "0.65rem",
+            fontSize: "0.8rem",
             textAlign: "center",
             color: transferStatus.includes("Done") ? "var(--green)" : "var(--text-muted)",
             letterSpacing: "0.05em",

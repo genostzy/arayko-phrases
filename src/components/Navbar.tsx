@@ -16,9 +16,8 @@ export default function Navbar() {
   }, []);
 
   const links = [
-    { label: "EXPLORE", id: "chains" },
-    { label: "FEATURES", id: "features" },
-    { label: "WEB3", id: "web3" },
+    { label: "ABOUT", id: "about" },
+    { label: "MARKETPLACE", id: "marketplace" },
   ];
 
   return (
@@ -38,7 +37,7 @@ export default function Navbar() {
               <path d="M30 65 L50 30 L70 65" stroke="white" strokeWidth="2.5" fill="none" />
               <circle cx="50" cy="50" r="5" fill="white" />
             </svg>
-            <span className="text-xs font-bold tracking-[0.15em] hidden sm:block">
+            <span className="text-sm font-bold tracking-[0.15em] hidden sm:block">
               ARAYKOPO NFT
             </span>
           </a>
@@ -50,7 +49,7 @@ export default function Navbar() {
                 key={link.label}
                 href={`#${link.id}`}
                 onClick={(e) => scrollToSection(e, link.id)}
-                className="text-[0.65rem] tracking-[0.2em] text-white/40 hover:text-white transition-colors duration-300"
+                className="text-sm tracking-[0.2em] text-white/50 hover:text-white transition-colors duration-300"
               >
                 {link.label}
               </a>

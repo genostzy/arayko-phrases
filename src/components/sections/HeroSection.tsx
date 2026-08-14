@@ -43,7 +43,7 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden scroll-mt-16 snap-start"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden scroll-mt-16"
     >
       {/* Gradient overlays */}
       <div className="absolute inset-0 z-[1]">
@@ -53,9 +53,9 @@ export default function HeroSection() {
 
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
         <div className="mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-2 border border-white/10 text-xs tracking-[0.2em] text-white/50 mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 border border-white/10 text-sm tracking-[0.2em] text-white/60 mb-8">
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            MULTI-CHAIN NFT EXPLORER
+            ARAYKOPO NFT COLLECTION
           </div>
         </div>
 
@@ -63,33 +63,33 @@ export default function HeroSection() {
           ref={titleRef}
           className="text-[clamp(3rem,12vw,9rem)] font-black leading-[0.85] tracking-[-0.04em] mb-8 opacity-0"
         >
-          <span className="block">EXPLORE</span>
+          <span className="block">ARAYKOPO</span>
           <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-green-400">
-            DIGITAL
+            PHRASES
           </span>
-          <span className="block">ART</span>
+          <span className="block">COLLECTION</span>
         </h1>
 
         <p
           ref={subRef}
-          className="text-sm md:text-base text-white/40 tracking-[0.2em] uppercase max-w-xl mx-auto mb-12 opacity-0"
+          className="text-base md:text-lg text-white/50 tracking-[0.1em] uppercase max-w-xl mx-auto mb-12 opacity-0"
         >
-          Browse NFTs across Ethereum, Solana, Stellar, and more.
-          One interface. Every chain.
+          Mint, own, and trade iconic Phrase NFTs, fully on-chain on the
+          Stellar network.
         </p>
 
         <div ref={ctaRef} className="flex gap-4 justify-center flex-wrap opacity-0">
           <a
-            href="#chains"
-            onClick={(e) => scrollToSection(e, "chains")}
-            className="px-8 py-4 bg-white text-black font-bold text-xs tracking-[0.2em] hover:bg-purple-500 hover:text-white transition-all duration-300"
+            href="#marketplace"
+            onClick={(e) => scrollToSection(e, "marketplace")}
+            className="px-8 py-4 bg-white text-black font-bold text-sm tracking-[0.2em] hover:bg-purple-500 hover:text-white transition-all duration-300"
           >
-            EXPLORE CHAINS
+            MINT NOW
           </a>
           <a
-            href="#web3"
-            onClick={(e) => scrollToSection(e, "web3")}
-            className="px-8 py-4 border-2 border-white/20 text-white font-bold text-xs tracking-[0.2em] hover:border-white hover:bg-white hover:text-black transition-all duration-300"
+            href="#marketplace"
+            onClick={(e) => scrollToSection(e, "marketplace")}
+            className="px-8 py-4 border-2 border-white/20 text-white font-bold text-sm tracking-[0.2em] hover:border-white hover:bg-white hover:text-black transition-all duration-300"
           >
             CONNECT WALLET
           </a>
@@ -98,7 +98,7 @@ export default function HeroSection() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
-        <span className="text-[0.6rem] tracking-[0.3em] text-white/30">SCROLL</span>
+        <span className="text-xs tracking-[0.3em] text-white/40">SCROLL</span>
         <div className="w-[1px] h-8 bg-gradient-to-b from-white/30 to-transparent animate-pulse" />
       </div>
     </section>

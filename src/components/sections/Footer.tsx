@@ -15,38 +15,39 @@ export default function Footer() {
                 <path d="M30 65 L50 30 L70 65" stroke="white" strokeWidth="2.5" fill="none" />
                 <circle cx="50" cy="50" r="5" fill="white" />
               </svg>
-              <span className="text-sm font-bold tracking-[0.15em]">ARAYKOPO NFT</span>
+              <span className="text-base font-bold tracking-[0.15em]">ARAYKOPO NFT</span>
             </div>
-            <p className="text-xs text-white/30 leading-relaxed max-w-sm">
-              A multi-chain NFT explorer. Browse, mint, and trade digital
-              assets across Ethereum, Solana, Stellar, and more.
+            <p className="text-sm text-white/40 leading-relaxed max-w-sm">
+              ArayKoPo NFT is a collection of iconic Phrases, minted and
+              traded fully on-chain on the Stellar blockchain.
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="text-[0.65rem] tracking-[0.2em] text-white/50 font-bold mb-4">
-              EXPLORE
+            <h4 className="text-sm tracking-[0.2em] text-white/60 font-bold mb-4">
+              SITE
             </h4>
             <ul className="space-y-2">
-              {["Ethereum", "Solana", "Stellar", "Polygon", "Base", "Bitcoin"].map(
-                (chain) => (
-                  <li key={chain}>
-                    <a
-                      href="#chains"
-                      onClick={(e) => scrollToSection(e, "chains")}
-                      className="text-xs text-white/30 hover:text-white transition-colors"
-                    >
-                      {chain}
-                    </a>
-                  </li>
-                )
-              )}
+              {[
+                { label: "About", id: "about" },
+                { label: "Marketplace", id: "marketplace" },
+              ].map((link) => (
+                <li key={link.id}>
+                  <a
+                    href={`#${link.id}`}
+                    onClick={(e) => scrollToSection(e, link.id)}
+                    className="text-sm text-white/40 hover:text-white transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="text-[0.65rem] tracking-[0.2em] text-white/50 font-bold mb-4">
+            <h4 className="text-sm tracking-[0.2em] text-white/60 font-bold mb-4">
               RESOURCES
             </h4>
             <ul className="space-y-2">
@@ -61,7 +62,7 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-white/30 hover:text-white transition-colors"
+                    className="text-sm text-white/40 hover:text-white transition-colors"
                   >
                     {link.label}
                   </a>
@@ -73,7 +74,7 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-[0.6rem] tracking-[0.15em] text-white/20">
+          <p className="text-xs tracking-[0.15em] text-white/30">
             ARAYKOPO NFT &copy; 2026. ALL RIGHTS RESERVED.
           </p>
           <div className="flex gap-6">
@@ -81,7 +82,7 @@ export default function Footer() {
               <a
                 key={social}
                 href="#"
-                className="text-[0.6rem] tracking-[0.15em] text-white/20 hover:text-white transition-colors"
+                className="text-xs tracking-[0.15em] text-white/30 hover:text-white transition-colors"
               >
                 {social.toUpperCase()}
               </a>

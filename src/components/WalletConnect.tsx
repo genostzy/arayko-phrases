@@ -61,7 +61,7 @@ export function WalletConnect({ onConnect }: WalletConnectProps) {
       <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         <span
           style={{
-            fontSize: "0.7rem",
+            fontSize: "0.85rem",
             fontFamily: "monospace",
             color: "var(--green)",
             letterSpacing: "0.05em",
@@ -78,7 +78,7 @@ export function WalletConnect({ onConnect }: WalletConnectProps) {
             background: "transparent",
             color: "var(--text-muted)",
             fontWeight: 600,
-            fontSize: "0.65rem",
+            fontSize: "0.8rem",
             letterSpacing: "0.15em",
             cursor: "pointer",
             transition: "all 0.2s",
@@ -109,7 +109,7 @@ export function WalletConnect({ onConnect }: WalletConnectProps) {
         background: "transparent",
         color: "white",
         fontWeight: 800,
-        fontSize: "0.7rem",
+        fontSize: "0.85rem",
         letterSpacing: "0.15em",
         cursor: "pointer",
         transition: "all 0.3s",

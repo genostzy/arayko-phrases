@@ -215,7 +215,7 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
           <div>
             <h2
               style={{
-                fontSize: "0.75rem",
+                fontSize: "0.9rem",
                 fontWeight: 800,
                 letterSpacing: "0.2em",
                 marginBottom: "0.5rem",
@@ -223,7 +223,7 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
             >
               BROWSE
             </h2>
-            <p style={{ fontSize: "0.65rem", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
+            <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
               {totalSupply} NFT{totalSupply !== 1 ? "S" : ""} MINTED
             </p>
           </div>
@@ -241,7 +241,7 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
                 border: "2px solid rgba(255,255,255,0.1)",
                 background: "transparent",
                 color: "white",
-                fontSize: "0.8rem",
+                fontSize: "0.95rem",
                 fontFamily: "monospace",
                 outline: "none",
               }}
@@ -257,7 +257,7 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
                 border: "2px solid white",
                 background: "transparent",
                 color: "white",
-                fontSize: "0.65rem",
+                fontSize: "0.8rem",
                 fontWeight: 800,
                 letterSpacing: "0.15em",
                 cursor: "pointer",
@@ -310,7 +310,7 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
                     x
                   </button>
                 </div>
-                <p style={{ fontSize: "0.6rem", color: "var(--text-muted)", fontFamily: "monospace", wordBreak: "break-all" }}>
+                <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "monospace", wordBreak: "break-all" }}>
                   {selectedNFT.owner}
                 </p>
               </div>
@@ -333,7 +333,7 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
               border: "2px solid rgba(255,255,255,0.1)",
             }}
           >
-            <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
               {isConfigured ? "NO NFTS YET" : "DEPLOY CONTRACT FIRST"}
             </p>
           </div>
@@ -380,9 +380,9 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
                   </div>
                   <div style={{ padding: "0.6rem" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: "0.75rem", fontWeight: 800 }}>#{nft.tokenId}</span>
+                      <span style={{ fontSize: "0.9rem", fontWeight: 800 }}>#{nft.tokenId}</span>
                       {walletAddress && nft.owner === walletAddress && (
-                        <span style={{ fontSize: "0.5rem", color: "var(--green)", letterSpacing: "0.1em" }}>YOURS</span>
+                        <span style={{ fontSize: "0.7rem", color: "var(--green)", letterSpacing: "0.1em" }}>YOURS</span>
                       )}
                     </div>
                   </div>
@@ -409,14 +409,14 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
                     background: "transparent",
                     color: page === 0 ? "rgba(255,255,255,0.2)" : "white",
                     fontWeight: 700,
-                    fontSize: "0.65rem",
+                    fontSize: "0.8rem",
                     letterSpacing: "0.1em",
                     cursor: page === 0 ? "not-allowed" : "pointer",
                   }}
                 >
                   PREV
                 </button>
-                <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
+                <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", letterSpacing: "0.1em" }}>
                   {page + 1}/{totalPages}
                 </span>
                 <button
@@ -428,7 +428,7 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
                     background: "transparent",
                     color: page >= totalPages - 1 ? "rgba(255,255,255,0.2)" : "white",
                     fontWeight: 700,
-                    fontSize: "0.65rem",
+                    fontSize: "0.8rem",
                     letterSpacing: "0.1em",
                     cursor: page >= totalPages - 1 ? "not-allowed" : "pointer",
                   }}
@@ -490,24 +490,24 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
               </div>
 
               <div style={{ marginBottom: "1.5rem" }}>
-                <p style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "0.15em", marginBottom: "0.3rem" }}>
+                <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", letterSpacing: "0.15em", marginBottom: "0.3rem" }}>
                   OWNER
                 </p>
-                <p style={{ fontSize: "0.75rem", fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.5 }}>
+                <p style={{ fontSize: "0.9rem", fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.5 }}>
                   {selectedNFT.owner}
                 </p>
               </div>
 
               {selectedNFT.uri && (
                 <div style={{ marginBottom: "1.5rem" }}>
-                  <p style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "0.15em", marginBottom: "0.3rem" }}>
+                  <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", letterSpacing: "0.15em", marginBottom: "0.3rem" }}>
                     METADATA
                   </p>
                   <a
                     href={selectedNFT.uri}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ fontSize: "0.7rem", color: "var(--accent)", textDecoration: "none", wordBreak: "break-all" }}
+                    style={{ fontSize: "0.85rem", color: "var(--accent)", textDecoration: "none", wordBreak: "break-all" }}
                   >
                     {selectedNFT.uri}
                   </a>
@@ -524,7 +524,7 @@ export function BrowseNFTs({ walletAddress, refreshKey }: BrowseNFTsProps) {
                   padding: "0.8rem",
                   border: "1px solid rgba(255,255,255,0.2)",
                   color: "var(--text-muted)",
-                  fontSize: "0.65rem",
+                  fontSize: "0.8rem",
                   fontWeight: 700,
                   letterSpacing: "0.15em",
                   textDecoration: "none",
