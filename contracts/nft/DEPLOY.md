@@ -35,11 +35,7 @@ From `contracts/nft/`:
 
 ```bash
 stellar contract build
-stellar contract deploy \
-  --wasm target/wasm32v1-none/release/nft.wasm \
-  --source-account admin \
-  --network testnet \
-  --alias araykopo_phrases
+stellar contract deploy --wasm target/wasm32v1-none/release/nft.wasm --source-account admin --network testnet --alias araykopo_phrases
 ```
 
 This prints the new contract ID (starts with `C`). Save it.
@@ -47,15 +43,7 @@ This prints the new contract ID (starts with `C`). Save it.
 ## 4. Initialize it
 
 ```bash
-stellar contract invoke \
-  --id <CONTRACT_ID_FROM_STEP_3> \
-  --source-account admin \
-  --network testnet \
-  -- initialize \
-  --admin <YOUR_ADMIN_ADDRESS_FROM_STEP_1> \
-  --nft_name "ArayKoPo Phrases" \
-  --nft_symbol "ARKPO" \
-  --native_token <NATIVE_TOKEN_ADDRESS_FROM_STEP_2>
+stellar contract invoke --id <CONTRACT_ID_FROM_STEP_3> --source-account admin --network testnet -- initialize --admin <YOUR_ADMIN_ADDRESS_FROM_STEP_1> --nft_name "ArayKoPo Phrases" --nft_symbol "ARKPO" --native_token <NATIVE_TOKEN_ADDRESS_FROM_STEP_2>
 ```
 
 ## 5. Wire it into the frontend
@@ -75,12 +63,7 @@ Before touching the browser, you can confirm the contract responds
 correctly from the CLI:
 
 ```bash
-stellar contract invoke \
-  --id <CONTRACT_ID_FROM_STEP_3> \
-  --source-account admin \
-  --network testnet \
-  --send=no \
-  -- admin
+stellar contract invoke --id <CONTRACT_ID_FROM_STEP_3> --source-account admin --network testnet --send=no -- admin
 ```
 
 This should print your admin address back. `--send=no` runs it as a
