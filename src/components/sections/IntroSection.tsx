@@ -68,7 +68,7 @@ export default function IntroSection() {
                   key={i}
                   className="border border-white/5"
                   style={{
-                    opacity: Math.random() * 0.5 + 0.1,
+                    opacity: ((i * 37) % 50) / 100 + 0.1,
                     background:
                       i % 3 === 0
                         ? "rgba(108, 92, 231, 0.1)"

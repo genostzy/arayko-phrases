@@ -12,6 +12,18 @@
   --color-border: #222222;
 }
 
+:root {
+  --bg: var(--color-bg);
+  --bg-light: var(--color-bg-light);
+  --bg-card: var(--color-bg-card);
+  --text: var(--color-text);
+  --text-muted: var(--color-text-muted);
+  --accent: var(--color-accent);
+  --green: var(--color-green);
+  --red: var(--color-red);
+  --border: var(--color-border);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -20,7 +32,7 @@
 
 html, body {
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 body {

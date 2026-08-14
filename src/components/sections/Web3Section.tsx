@@ -2,10 +2,20 @@
 
 import { useRef, useEffect, useState } from "react";
 import { WalletConnect } from "@/components/WalletConnect";
+import { NetworkStatus } from "@/components/NetworkStatus";
+import { NFTMinter } from "@/components/NFTMinter";
+import { NFTGallery } from "@/components/NFTGallery";
+import { BrowseNFTs } from "@/components/BrowseNFTs";
+
+const TABS = ["MINT", "MY NFTS", "BROWSE"] as const;
+type Tab = (typeof TABS)[number];
 
 export default function Web3Section() {
   const sectionRef = useRef<HTMLElement>(null);
   const [mounted, setMounted] = useState(false);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [tab, setTab] = useState<Tab>("MINT");
 
   useEffect(() => {
     setMounted(true);
@@ -38,17 +48,18 @@ export default function Web3Section() {
         </p>
 
         <div
-          className="inline-block mb-8"
+          className="inline-flex flex-col items-center gap-4 mb-8"
           style={{
             opacity: mounted ? 1 : 0,
             animation: mounted ? "fadeInUp 0.6s ease-out forwards" : "none",
           }}
         >
-          <WalletConnect onConnect={() => {}} />
+          <WalletConnect onConnect={setWalletAddress} />
+          <NetworkStatus walletAddress={walletAddress} />
         </div>
 
         {/* Feature pills */}
-        <div className="flex flex-wrap justify-center gap-3 mt-12">
+        <div className="flex flex-wrap justify-center gap-3 mt-4 mb-16">
           {[
             "Non-Custodial",
             "Multi-Chain",
@@ -62,6 +73,38 @@ export default function Web3Section() {
               {feature.toUpperCase()}
             </span>
           ))}
+        </div>
+
+        {/* Stellar NFT dashboard */}
+        <div className="text-left border border-white/10 bg-[#0a0a0a]/60 backdrop-blur-sm p-6 md:p-10">
+          <div className="flex gap-2 mb-8 justify-center flex-wrap">
+            {TABS.map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`px-4 py-2 text-[0.65rem] tracking-[0.15em] font-bold border transition-all ${
+                  tab === t
+                    ? "border-white bg-white text-black"
+                    : "border-white/10 text-white/40 hover:border-white/30"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+
+          {tab === "MINT" && (
+            <NFTMinter
+              walletAddress={walletAddress}
+              onMinted={() => setRefreshKey((k) => k + 1)}
+            />
+          )}
+          {tab === "MY NFTS" && (
+            <NFTGallery walletAddress={walletAddress} refreshKey={refreshKey} />
+          )}
+          {tab === "BROWSE" && (
+            <BrowseNFTs walletAddress={walletAddress} refreshKey={refreshKey} />
+          )}
         </div>
       </div>
     </section>
