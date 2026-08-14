@@ -51,6 +51,17 @@ function isUserRejection(message: string) {
   return message.toLowerCase().includes("reject");
 }
 
+// Soroban wraps contract panics in a generic "HostError: Error(WasmVm,
+// InvalidAction)" envelope with the real reason buried in an event log,
+// e.g. `caught panic 'Token is not for sale' from contract function 'buy'`.
+// Pull that out instead of showing the generic wrapper.
+function describeError(message: string): string {
+  const panicMatch = message.match(/caught panic '([^']*)'/);
+  if (panicMatch) return panicMatch[1];
+  if (message.includes("InvalidAction")) return "Transaction rejected by the contract";
+  return message;
+}
+
 export default function PhraseGrid({ walletAddress }: PhraseGridProps) {
   const [adminAddress, setAdminAddress] = useState<string | null>(null);
   const [phrases, setPhrases] = useState<PhraseState[]>([]);
@@ -181,7 +192,7 @@ export default function PhraseGrid({ walletAddress }: PhraseGridProps) {
       setTimeout(() => setStatus(""), 2000);
     } catch (error: any) {
       const message: string = error.message || failureMessage;
-      setStatus(isUserRejection(message) ? "" : message.slice(0, 80));
+      setStatus(isUserRejection(message) ? "" : describeError(message).slice(0, 100));
     }
   }
 
