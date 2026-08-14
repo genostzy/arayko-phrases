@@ -131,6 +131,8 @@ impl PhraseMarketplace {
     }
 
     pub fn transfer(env: Env, from: Address, to: Address, token_id: u32) {
+        from.require_auth();
+
         let current_owner: Address = env
             .storage()
             .instance()
@@ -142,9 +144,10 @@ impl PhraseMarketplace {
         }
 
         env.storage().instance().set(&DataKey::TokenOwner(token_id), &to);
+        env.storage().instance().set(&DataKey::ForSale(token_id), &false);
 
         let from_balance: u32 = env.storage().instance().get(&DataKey::Balance(from.clone())).unwrap_or(0u32);
-        env.storage().instance().set(&DataKey::Balance(from), &(from_balance - 1));
+        env.storage().instance().set(&DataKey::Balance(from), &from_balance.saturating_sub(1));
 
         let to_balance: u32 = env.storage().instance().get(&DataKey::Balance(to.clone())).unwrap_or(0u32);
         env.storage().instance().set(&DataKey::Balance(to), &(to_balance + 1));
@@ -358,5 +361,48 @@ mod tests {
 
         // No auth provided for the buyer on this call — must panic.
         client.set_auths(&[]).buy(&buyer, &0u32);
+    }
+
+    #[test]
+    fn test_transfer_moves_ownership() {
+        let env = Env::default();
+        env.mock_all_auths();
+        let (client, admin, _native) = setup(&env);
+        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+
+        let recipient = Address::generate(&env);
+        client.transfer(&admin, &recipient, &0u32);
+
+        assert_eq!(client.owner_of(&0u32), Some(recipient.clone()));
+        assert_eq!(client.balance_of(&admin), 0);
+        assert_eq!(client.balance_of(&recipient), 1);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_transfer_fails_without_from_authorization() {
+        let env = Env::default();
+        env.mock_all_auths();
+        let (client, admin, _native) = setup(&env);
+        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+
+        let recipient = Address::generate(&env);
+        // No auth provided for `from` on this call — must panic.
+        client.set_auths(&[]).transfer(&admin, &recipient, &0u32);
+    }
+
+    #[test]
+    fn test_transfer_clears_stale_for_sale_flag() {
+        let env = Env::default();
+        env.mock_all_auths();
+        let (client, admin, _native) = setup(&env);
+        client.mint(&0u32, &String::from_str(&env, "/images/Phrase%231.jpg"), &500_0000000i128);
+        assert!(client.is_for_sale(&0u32));
+
+        let recipient = Address::generate(&env);
+        client.transfer(&admin, &recipient, &0u32);
+
+        // Gifted directly instead of bought — must not still look purchasable.
+        assert!(!client.is_for_sale(&0u32));
     }
 }
