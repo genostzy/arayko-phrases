@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { scrollToSection, scrollToTop } from "@/lib/scrollToSection";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -15,9 +16,9 @@ export default function Navbar() {
   }, []);
 
   const links = [
-    { label: "EXPLORE", href: "#chains" },
-    { label: "FEATURES", href: "#features" },
-    { label: "WEB3", href: "#web3" },
+    { label: "EXPLORE", id: "chains" },
+    { label: "FEATURES", id: "features" },
+    { label: "WEB3", id: "web3" },
   ];
 
   return (
@@ -31,14 +32,14 @@ export default function Navbar() {
       >
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2">
+          <a href="#" onClick={scrollToTop} className="flex items-center gap-2">
             <svg width="24" height="24" viewBox="0 0 100 100" fill="none">
               <circle cx="50" cy="50" r="48" stroke="white" strokeWidth="1.5" />
               <path d="M30 65 L50 30 L70 65" stroke="white" strokeWidth="2.5" fill="none" />
               <circle cx="50" cy="50" r="5" fill="white" />
             </svg>
             <span className="text-xs font-bold tracking-[0.15em] hidden sm:block">
-              STELLAR NFT
+              ARAYKOPO NFT
             </span>
           </a>
 
@@ -47,7 +48,8 @@ export default function Navbar() {
             {links.map((link) => (
               <a
                 key={link.label}
-                href={link.href}
+                href={`#${link.id}`}
+                onClick={(e) => scrollToSection(e, link.id)}
                 className="text-[0.65rem] tracking-[0.2em] text-white/40 hover:text-white transition-colors duration-300"
               >
                 {link.label}
@@ -85,8 +87,11 @@ export default function Navbar() {
           {links.map((link) => (
             <a
               key={link.label}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
+              href={`#${link.id}`}
+              onClick={(e) => {
+                setMenuOpen(false);
+                scrollToSection(e, link.id);
+              }}
               className="text-2xl font-bold tracking-[0.2em] text-white/60 hover:text-white transition-colors"
             >
               {link.label}

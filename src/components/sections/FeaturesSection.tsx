@@ -67,7 +67,7 @@ export default function FeaturesSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="features" className="relative py-32 border-t border-white/5">
+    <section ref={sectionRef} id="features" className="relative min-h-screen flex flex-col justify-center py-32 border-t border-white/5 scroll-mt-16 snap-start">
       <div className="max-w-6xl mx-auto px-6">
         <div className="mb-20">
           <span className="text-[0.65rem] tracking-[0.3em] text-green-500 font-bold block mb-4">

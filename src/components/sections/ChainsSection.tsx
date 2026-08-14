@@ -132,7 +132,7 @@ export default function ChainsSection() {
     <section
       ref={sectionRef}
       id="chains"
-      className="relative py-32 border-t border-white/5"
+      className="relative min-h-screen flex flex-col justify-center py-32 border-t border-white/5 scroll-mt-16 snap-start"
     >
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">

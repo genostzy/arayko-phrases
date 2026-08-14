@@ -38,7 +38,7 @@ export default function IntroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center py-32"
+      className="relative min-h-screen flex items-center py-32 scroll-mt-16 snap-start"
     >
       <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
         <div ref={textRef} className="opacity-0">

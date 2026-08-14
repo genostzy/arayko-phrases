@@ -1,5 +1,7 @@
 "use client";
 
+import { scrollToSection } from "@/lib/scrollToSection";
+
 export default function Footer() {
   return (
     <footer className="border-t border-white/5 py-16">
@@ -13,7 +15,7 @@ export default function Footer() {
                 <path d="M30 65 L50 30 L70 65" stroke="white" strokeWidth="2.5" fill="none" />
                 <circle cx="50" cy="50" r="5" fill="white" />
               </svg>
-              <span className="text-sm font-bold tracking-[0.15em]">STELLAR NFT</span>
+              <span className="text-sm font-bold tracking-[0.15em]">ARAYKOPO NFT</span>
             </div>
             <p className="text-xs text-white/30 leading-relaxed max-w-sm">
               A multi-chain NFT explorer. Browse, mint, and trade digital
@@ -32,6 +34,7 @@ export default function Footer() {
                   <li key={chain}>
                     <a
                       href="#chains"
+                      onClick={(e) => scrollToSection(e, "chains")}
                       className="text-xs text-white/30 hover:text-white transition-colors"
                     >
                       {chain}
@@ -71,7 +74,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-[0.6rem] tracking-[0.15em] text-white/20">
-            STELLAR NFT &copy; 2026. ALL RIGHTS RESERVED.
+            ARAYKOPO NFT &copy; 2026. ALL RIGHTS RESERVED.
           </p>
           <div className="flex gap-6">
             {["Twitter", "Discord", "GitHub"].map((social) => (

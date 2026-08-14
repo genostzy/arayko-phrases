@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { scrollToSection } from "@/lib/scrollToSection";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -42,7 +43,7 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden scroll-mt-16 snap-start"
     >
       {/* Gradient overlays */}
       <div className="absolute inset-0 z-[1]">
@@ -80,12 +81,14 @@ export default function HeroSection() {
         <div ref={ctaRef} className="flex gap-4 justify-center flex-wrap opacity-0">
           <a
             href="#chains"
+            onClick={(e) => scrollToSection(e, "chains")}
             className="px-8 py-4 bg-white text-black font-bold text-xs tracking-[0.2em] hover:bg-purple-500 hover:text-white transition-all duration-300"
           >
             EXPLORE CHAINS
           </a>
           <a
             href="#web3"
+            onClick={(e) => scrollToSection(e, "web3")}
             className="px-8 py-4 border-2 border-white/20 text-white font-bold text-xs tracking-[0.2em] hover:border-white hover:bg-white hover:text-black transition-all duration-300"
           >
             CONNECT WALLET

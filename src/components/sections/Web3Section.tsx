@@ -25,7 +25,7 @@ export default function Web3Section() {
     <section
       ref={sectionRef}
       id="web3"
-      className="relative py-32 border-t border-white/5"
+      className="relative min-h-screen flex flex-col justify-center py-32 border-t border-white/5 scroll-mt-16 snap-start"
     >
       {/* Background accent */}
       <div className="absolute inset-0 overflow-hidden">
@@ -75,7 +75,7 @@ export default function Web3Section() {
           ))}
         </div>
 
-        {/* Stellar NFT dashboard */}
+        {/* NFT dashboard */}
         <div className="text-left border border-white/10 bg-[#0a0a0a]/60 backdrop-blur-sm p-6 md:p-10">
           <div className="flex gap-2 mb-8 justify-center flex-wrap">
             {TABS.map((t) => (

@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { scrollToSection } from "@/lib/scrollToSection";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -38,7 +39,7 @@ export default function CTASection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-40 border-t border-white/5 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center py-40 border-t border-white/5 overflow-hidden scroll-mt-16 snap-start"
     >
       {/* Big background text */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -64,6 +65,7 @@ export default function CTASection() {
         <div className="flex gap-4 justify-center flex-wrap">
           <a
             href="#chains"
+            onClick={(e) => scrollToSection(e, "chains")}
             className="px-10 py-5 bg-white text-black font-bold text-xs tracking-[0.2em] hover:bg-purple-500 hover:text-white transition-all duration-300"
           >
             EXPLORE NOW
